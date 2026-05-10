@@ -1,0 +1,20 @@
+[project]
+name = "webresearch-deep"
+version = "0.1.0"
+description = "Deep research workflow for webresearch — multi-lane with review-and-gap loop."
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = ["webresearch>=0.1.0"]
+
+[project.entry-points."webresearch.workflows"]
+deep = "webresearch.workflows.deep.workflow:run_deep"
+
+[project.entry-points."webresearch.workflows.metadata"]
+deep = "webresearch.workflows.deep:get_metadata"
+
+[build-system]
+requires = ["hatchling>=1.27.0"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/webresearch"]
