@@ -1,3 +1,4 @@
+"""Entry point for the deep research workflow."""
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
@@ -9,4 +10,8 @@ if TYPE_CHECKING:
 
 
 async def run_deep(input: WorkflowInput) -> WorkflowResult:
+    """Run the deep research workflow.
+
+    Entry point registered via ``webresearch.workflows`` entry-point group.
+    """
     return await PIPELINE.run(input)

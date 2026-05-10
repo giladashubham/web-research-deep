@@ -6,6 +6,7 @@ from typing import TYPE_CHECKING
 
 from webresearch.pipeline.runtime import ExecutionResult
 from webresearch.types import Depth, WorkflowInput
+
 from webresearch.workflows import load_workflows
 from webresearch.workflows.deep import run_deep
 from webresearch.workflows.deep.models import (
@@ -44,9 +45,6 @@ def _patch_runtime(monkeypatch) -> list[str]:
     review_gapped = ReviewOutput(
         coverage=[], conflicts=[], has_critical_gaps=True, follow_up_queries=["gap"]
     )
-    review_clean = ReviewOutput(
-        coverage=[], conflicts=[], has_critical_gaps=False, follow_up_queries=[]
-    )
     gaps = [
         GapResearchOutput(summary="gap", source_ids=[], evidence_ids=[], confidence="low"),
     ]
@@ -59,8 +57,8 @@ def _patch_runtime(monkeypatch) -> list[str]:
             out = research[(call_index[0]) % len(research)]
         elif name == "reviewer":
             reviewer_calls.append("review")
-            # Return has_gaps=True for first 2 calls, then clean on 3rd
-            out = review_gapped if len(reviewer_calls) < 3 else review_clean
+            # Always return gapped — loop stops at max_iterations
+            out = review_gapped
         elif name == "gap_researcher":
             out = gaps[(call_index[0]) % len(gaps)]
         elif name == "output":
@@ -90,8 +88,8 @@ async def test_deep_hits_max_rounds_two_and_stops(monkeypatch) -> None:
 
     assert result.answer_markdown == "Deep answer"
     assert result.metadata.workflow_id == "deep"
-    assert result.summary.count("gap") == 3
-    assert len(reviewer_calls) == 3
+    assert result.summary.count("gap") == 2
+    assert len(reviewer_calls) == 2
 
 
 async def test_deep_uses_standard_step_shape(monkeypatch) -> None:
@@ -112,8 +110,6 @@ async def test_deep_uses_standard_step_shape(monkeypatch) -> None:
         "official_researcher",
         "recent_researcher",
         "broad_researcher",
-        "reviewer",
-        "gap_researcher",
         "reviewer",
         "gap_researcher",
         "reviewer",

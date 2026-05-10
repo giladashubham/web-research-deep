@@ -1,3 +1,4 @@
+"""Deep research workflow — multi-lane with review-and-gap loop."""
 from webresearch.workflows import WorkflowEntry
 from webresearch.workflows.deep.workflow import run_deep
 

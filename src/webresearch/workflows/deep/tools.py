@@ -1,3 +1,8 @@
+"""Tool definitions for the deep research workflow.
+
+Wraps the core providers as ``function_tool``-decorated async functions
+for use by the pipeline's agent steps.
+"""
 from __future__ import annotations
 
 from webresearch.pipeline import ToolContext, function_tool

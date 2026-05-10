@@ -3,7 +3,23 @@ name = "webresearch-deep"
 version = "0.1.0"
 description = "Deep research workflow for webresearch — multi-lane with review-and-gap loop."
 readme = "README.md"
+license = { text = "MIT" }
+authors = [
+    { name = "kodepo" },
+]
 requires-python = ">=3.12"
+keywords = ["web-research", "llm", "agents", "research", "deep-research"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Internet :: WWW/HTTP",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
 dependencies = ["webresearch>=0.1.0"]
 
 [project.entry-points."webresearch.workflows"]
@@ -12,9 +28,62 @@ deep = "webresearch.workflows.deep.workflow:run_deep"
 [project.entry-points."webresearch.workflows.metadata"]
 deep = "webresearch.workflows.deep:get_metadata"
 
+[project.urls]
+Homepage = "https://github.com/kodepo-com/web-research-deep"
+Repository = "https://github.com/kodepo-com/web-research-deep"
+Issues = "https://github.com/kodepo-com/web-research-deep/issues"
+
+[dependency-groups]
+dev = [
+    "pytest>=9.0.1",
+    "pytest-asyncio>=1.3.0",
+    "ruff>=0.14.8",
+]
+
 [build-system]
 requires = ["hatchling>=1.27.0"]
 build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/webresearch"]
+
+[tool.hatch.build.targets.wheel.force-include]
+"src/webresearch/workflows/deep" = "webresearch/workflows/deep"
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = [
+    "ANN",
+    "ARG",
+    "ASYNC",
+    "B",
+    "E",
+    "ERA",
+    "F",
+    "I",
+    "PL",
+    "PTH",
+    "RET",
+    "RUF",
+    "S",
+    "SIM",
+    "TCH",
+    "UP",
+    "W",
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**/*.py" = ["ANN", "PLR2004", "S101"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+line-ending = "auto"
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+addopts = "-q --strict-markers"

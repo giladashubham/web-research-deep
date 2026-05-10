@@ -8,3 +8,14 @@ build/
 .ruff_cache/
 .venv/
 .env
+
+# IDE / editor
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db

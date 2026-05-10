@@ -1,7 +1,42 @@
-# Deep Workflow
+# webresearch-deep
 
-Registered as `deep`. A higher-budget, multi-lane research workflow with a review-and-gap
-loop for thorough source coverage.
+A deep research workflow for [webresearch](https://github.com/shubham/web-research).
+Higher-budget, multi-lane research with parallel source lanes and a review-and-gap
+loop for thorough coverage.
+
+## Install
+
+```sh
+pip install git+https://github.com/kodepo-com/web-research-deep.git
+```
+
+Requires `webresearch` (the core framework) which is pulled in automatically.
+
+## Usage
+
+### CLI (with webresearch installed)
+
+```sh
+webresearch run "What is the current Node.js LTS version?" deep
+webresearch run "Compare Python 3.13 migration risks" deep --depth deep
+```
+
+### Python API
+
+```python
+from webresearch import run_workflow
+from webresearch.workflows import load_workflows
+from webresearch.types import WorkflowInput, Depth
+
+workflows = load_workflows()
+deep = workflows["deep"]
+
+result = await run_workflow(
+    deep,
+    WorkflowInput(query="What is the current Node.js LTS version?"),
+)
+print(result.answer_markdown)
+```
 
 ## Pipeline
 

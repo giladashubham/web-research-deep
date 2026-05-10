@@ -1,14 +1,17 @@
+"""Pipeline definition for the deep research workflow."""
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
 from webresearch.pipeline.runner import Pipeline
 from webresearch.pipeline.step import Loop, Parallel
+
 from webresearch.workflows.deep import agents
 from webresearch.workflows.deep.config import CONFIG
 
 if TYPE_CHECKING:
     from webresearch.pipeline.state import PipelineState
+
     from webresearch.workflows.deep.models import ReviewOutput
 
 
@@ -32,6 +35,7 @@ PIPELINE = Pipeline(
         Loop(
             steps=[agents.reviewer, agents.gap_researcher],
             until=lambda state: not _has_gaps(state),
+            max_iterations=CONFIG.max_gap_rounds,
         ),
         agents.output_writer,
     ],

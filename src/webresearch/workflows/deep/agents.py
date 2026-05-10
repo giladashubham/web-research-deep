@@ -1,8 +1,10 @@
+"""Agent step definitions for the deep research workflow."""
 from __future__ import annotations
 
 from importlib.resources import files
 
 from webresearch.pipeline.step import AgentStep
+
 from webresearch.workflows.deep.config import CONFIG
 from webresearch.workflows.deep.models import (
     FinalAnswer,
