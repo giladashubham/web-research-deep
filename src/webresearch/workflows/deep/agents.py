@@ -1,4 +1,5 @@
 """Agent step definitions for the deep research workflow."""
+
 from __future__ import annotations
 
 from importlib.resources import files

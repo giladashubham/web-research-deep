@@ -1,4 +1,5 @@
 """Configuration for the deep research workflow."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass
