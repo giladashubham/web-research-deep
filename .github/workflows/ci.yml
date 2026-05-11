@@ -31,7 +31,7 @@ jobs:
         run: |
           uv venv
           uv pip install "webresearch @ git+https://github.com/kodepo-com/web-research.git"
-          uv pip install -e . pytest pytest-asyncio ruff
+          uv pip install -e . pre-commit pytest pytest-asyncio ruff
 
       - name: Ruff check
         run: uv run ruff check src tests

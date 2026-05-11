@@ -1,6 +1,6 @@
 # webresearch-deep
 
-A deep research workflow for [webresearch](https://github.com/shubham/web-research).
+A deep research workflow for [webresearch](https://github.com/kodepo-com/web-research).
 Higher-budget, multi-lane research with parallel source lanes and a review-and-gap
 loop for thorough coverage.
 
@@ -13,13 +13,6 @@ pip install git+https://github.com/kodepo-com/web-research-deep.git
 Requires `webresearch` (the core framework) which is pulled in automatically.
 
 ## Usage
-
-### CLI (with webresearch installed)
-
-```sh
-webresearch run "What is the current Node.js LTS version?" deep
-webresearch run "Compare Python 3.13 migration risks" deep --depth deep
-```
 
 ### Python API
 
@@ -36,6 +29,14 @@ result = await run_workflow(
     WorkflowInput(query="What is the current Node.js LTS version?"),
 )
 print(result.answer_markdown)
+```
+
+## Development
+
+```sh
+uv sync --all-groups
+uv run pre-commit install
+uv run pytest
 ```
 
 ## Pipeline
