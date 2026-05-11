@@ -1,50 +1,8 @@
-# webresearch-deep
+# Pipeline Architecture
 
-A deep research workflow for [webresearch](https://github.com/kodepo-com/web-research).
-Higher-budget, multi-lane research with parallel source lanes and a review-and-gap
-loop for thorough coverage.
+The deep workflow uses a multi-lane parallel research design with a review-and-gap loop.
 
-## Install
-
-```sh
-pip install git+https://github.com/kodepo-com/web-research-deep.git
-```
-
-Requires `webresearch` (the core framework) which is pulled in automatically.
-
-## Usage
-
-### Python API
-
-```python
-from webresearch import run_workflow
-from webresearch.workflows import load_workflows
-from webresearch.types import WorkflowInput, Depth
-
-workflows = load_workflows()
-deep = workflows["deep"]
-
-result = await run_workflow(
-    deep,
-    WorkflowInput(query="What is the current Node.js LTS version?"),
-)
-print(result.answer_markdown)
-```
-
-## Development
-
-```sh
-uv sync --all-groups
-uv run pre-commit install
-uv run pytest
-```
-
-## Documentation
-
-- [**Pipeline Architecture**](docs/pipeline.md)
-- [**Configuration**](docs/config.md)
-
-## Pipeline
+## Step Flow
 
 ```
 planner ──────────────────────────────────────────────────
@@ -82,18 +40,16 @@ planner ────────────────────────
 | `gap_researcher` | All | `GapResearchOutput` | Fills gaps identified by reviewer |
 | `output` | None | `FinalAnswer` | Synthesises everything into final answer |
 
-## Config
+## Research Tools
 
-`config.py` exposes `DeepWorkflowConfig`:
+The workflow agents have access to four tools, all wrapping the core webresearch providers:
 
-| Field | Default | Description |
-|-------|---------|-------------|
-| `workflow_id` | `"deep"` | Workflow identifier |
-| `researcher_max_turns` | `35` | Max turns for research agents |
-| `max_gap_rounds` | `2` | Max gap loop iterations |
-| `research_lanes` | `("official", "recent", "broad")` | Parallel research lanes |
-| `reviewer_enabled` | `True` | Whether to run the reviewer step |
-| `gap_loop_enabled` | `True` | Whether to run the gap loop |
+| Tool | Provider | Purpose |
+|------|----------|---------|
+| `search_web_tool` | `SearchService` | Web search via Tavily |
+| `fetch_and_extract_tool` | `FetchProvider` + `ExtractProvider` | Fetch URL and extract text |
+| `discover_urls_tool` | `UrlDiscoverProvider` | Expand seed URLs via sitemaps and links |
+| `rank_sources_tool` | `SearchService` | Rank sources by reliability and recency |
 
 ## Prompts
 
@@ -104,5 +60,3 @@ Available variables:
 - `{{ input.instructions }}` — Optional user instructions
 - `{{ outputs.planner }}` — Plan output (or any prior step)
 - `{{ outputs.reviewer }}` — Review output (gap loop agents)
-
-Template: `webresearch/workflows/deep/prompts/*.j2`
