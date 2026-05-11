@@ -23,10 +23,14 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Configure git for private repos
+        run: |
+          git config --global url."https://oauth2:${{ secrets.GITHUB_TOKEN }}@github.com".insteadOf "https://github.com"
+
       - name: Install dependencies
         run: |
           uv venv
-          uv pip install "webresearch @ git+https://github.com/shubham/web-research.git"
+          uv pip install "webresearch @ git+https://github.com/kodepo-com/web-research.git"
           uv pip install -e . pytest pytest-asyncio ruff
 
       - name: Ruff check
