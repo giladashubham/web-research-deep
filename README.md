@@ -14,6 +14,14 @@ Requires `webresearch` (the core framework) which is pulled in automatically.
 
 ## Usage
 
+### Quick run (via script)
+
+```sh
+python run_deep.py "What is the latest Node.js LTS version?"
+python run_deep.py "Compare Python 3.13 migration risks" --depth deep
+python run_deep.py "Research AI trends" --max-sources 15 --output result.md
+```
+
 ### Python API
 
 ```python
